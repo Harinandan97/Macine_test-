@@ -24,10 +24,10 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     screens = [
-      HomeScreen(),
-      TransactionHistoryScreen(),
-      CreditScreen(),
-       ProfileScreen(),
+      const HomeScreen(),
+      const TransactionHistoryScreen(),
+      const CreditScreen(),
+      const ProfileScreen(),
     ];
     loadExpenses();
   }
@@ -48,6 +48,7 @@ class HomeController extends GetxController {
       .where((e) => e.type.toLowerCase() == 'expense')
       .fold(0.0, (sum, item) => sum + item.amount);
 
+  // Total balance = Income - Expenses
   double get totalBalance => totalIncome - totalExpense;
 
   // Daily Average (Calculated based on today's expenses)
@@ -90,12 +91,13 @@ class HomeController extends GetxController {
     try {
       final date = DateTime.parse(dateString);
       final now = DateTime.now();
+      final yesterday = now.subtract(const Duration(days: 1));
 
       if (date.year == now.year && date.month == now.month && date.day == now.day) {
         return 'Today';
-      } else if (date.year == now.year &&
-          date.month == now.month &&
-          date.day == now.day - 1) {
+      } else if (date.year == yesterday.year &&
+          date.month == yesterday.month &&
+          date.day == yesterday.day) {
         return 'Yesterday';
       }
       return DateFormat('MMM dd, yyyy').format(date);
